@@ -8,6 +8,7 @@ namespace tabuleiro
     class Tela
     {
 
+        //Recebe como parametro um tipo PartidaXadrez
         public static void imprimirPartida(PartidaDeXadrez partida)
         {
             imprimirTabuleiro(partida.tab);
@@ -16,8 +17,13 @@ namespace tabuleiro
             Console.WriteLine();
             Console.WriteLine("Turno: " + partida.turno);
             Console.WriteLine("Aguardando jogada: " + partida.jogadorAtual);
+            if (partida.xeque)
+            {
+                Console.WriteLine("XEQUE");
+            }
         }
 
+        //Imprime as pecas e as cores das pecas
         public static void imprimirPecasCapturadas(PartidaDeXadrez partida)
         {
             Console.WriteLine("Pecas capturadas: ");
@@ -33,6 +39,7 @@ namespace tabuleiro
 
         }
 
+        //Imprime e incrementa o conjunto
         public static void imprimirConjunto(HashSet<Peca> conjunto)
         {
             Console.Write("[");
@@ -42,6 +49,7 @@ namespace tabuleiro
             }
             Console.Write("]");
         }
+        //Faz uma matriz que imprime o tabuleiro recebendo uma tabela como parametro
         public static void imprimirTabuleiro(Tabuleiro tab)
         {
             for (int i = 0; i < tab.linhas; i++)
@@ -56,6 +64,8 @@ namespace tabuleiro
             }
             Console.WriteLine("  a b c d e f g h");
         }
+
+        //Imprime uma peca
         public static void imprimirPeca(Peca peca)
             {
 
@@ -81,6 +91,7 @@ namespace tabuleiro
             }
         }
 
+        //Recebe uma entrada do teclado e retorna uma posicao xadrez com essa entrada
         public static PosicaoXadrez lerPosicaoXadrez()
         {
             string s = Console.ReadLine();
@@ -89,6 +100,8 @@ namespace tabuleiro
             return new PosicaoXadrez(coluna, linha);
         }
 
+        //Recebe um tabuleiro e uma matriz com posicoes possiveis
+        //Caso true ele muda o fundo, caso não ,mantém o fundo inalterado.
         public static void imprimirTabuleiro(Tabuleiro tab, bool[,] posicoesPossiveis)
         {
             ConsoleColor fundoOriginal = Console.BackgroundColor;

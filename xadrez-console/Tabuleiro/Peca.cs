@@ -22,11 +22,18 @@ namespace tabuleiro
             this.QteMovimentos = 0;
         }
 
+        //Ele apenas incrementa o movimento
         public void incremetarQtdMovimentos()
         {
             QteMovimentos++;
         }
 
+        public void decrementarQtdMovimentos()
+        {
+            QteMovimentos--;
+        }
+
+        //Retorna a matriz com os valores falsos e trues
         public bool existeMovimentosPossiveis()
         {
             bool[,] mat = movimentosPossiveis();
@@ -43,6 +50,7 @@ namespace tabuleiro
             return false;
         }
 
+        //Retorna onde pode mover
         public bool podeMoverPara(Posicao pos)
         {
             return movimentosPossiveis()[pos.linha, pos.coluna];

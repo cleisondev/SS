@@ -8,6 +8,7 @@ namespace tabuleiro
 
         public Posicao(int linha, int coluna) { this.linha = linha; this.coluna = coluna; }
 
+        //Define a posicao
         public void definirValores(int linha, int coluna)
         {
             this.linha = linha; this.coluna = coluna;

@@ -14,18 +14,20 @@ namespace tabuleiro
             pecas = new Peca[linhas,colunas];
         }
 
+        //Verifica se a peca existe, usando outros validadores como o validarPos que retorna se é válida ou nao
         public bool existePeca(Posicao pos) 
         {
             ValidarPosicao(pos);
             return peca(pos) != null;     
         }
 
+        //Essa função recebe as linhas e colunas
         public Peca peca(int linha, int coluna) 
         {
             return pecas[linha,coluna];
         }
 
-
+        //Essa função recebe uma posicao e retorna essa posicao com linhas e colunas
         public Peca peca(Posicao pos)
         {
             return pecas[pos.linha, pos.coluna];
@@ -41,6 +43,7 @@ namespace tabuleiro
             p.posicao = pos;
         }
 
+        //Se a peca for null retorna null, caso não, ele torna o valor tal em null; 
         public Peca retirarPeca( Posicao pos)
         {
             if (peca(pos) == null) { return null; }

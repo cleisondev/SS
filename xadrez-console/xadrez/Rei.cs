@@ -14,11 +14,16 @@ namespace xadrez
             return "R";
         }
 
+        //Retorna true se a posicao for nula ou a cor em questão for diferente da cor do parametro
         private bool podeMover(Posicao pos)
         {
             Peca p = Tab.peca(pos);
             return p == null || p.Cor != Cor;
         }
+
+        //Cria uma matriz booleana com falses e trues, uma nova posicao 0,0
+        //Ver aquela posicao de tal peca mais os calculos
+        //Se a posicao for valida, e se pode mover, retorna a matriz com a posição possivel.
         public override bool[,] movimentosPossiveis()
         {
             bool[,] mat = new bool[Tab.linhas, Tab.colunas];
