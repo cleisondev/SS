@@ -2,6 +2,7 @@
 using tabuleiro;
 using xadrez;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 
 namespace xadrez
 {
@@ -76,12 +77,12 @@ namespace xadrez
         //Essa função auxilia na colocada de pecas.
         private void colocarPecas()
         {
-            colocarNovaPeca('c', 1, new Torre(tab, Cor.Branca));
-            colocarNovaPeca('c', 2, new Torre(tab, Cor.Branca));
-            colocarNovaPeca('d', 2, new Torre(tab, Cor.Branca));
-            colocarNovaPeca('e', 2, new Torre(tab, Cor.Branca));
-            colocarNovaPeca('e', 1, new Torre(tab, Cor.Branca));
-            colocarNovaPeca('d', 1, new Rei(tab, Cor.Branca));
+            //colocarNovaPeca('c', 1, new Torre(tab, Cor.Branca));
+            //colocarNovaPeca('c', 2, new Torre(tab, Cor.Branca));
+            //colocarNovaPeca('d', 2, new Torre(tab, Cor.Branca));
+            //colocarNovaPeca('e', 2, new Torre(tab, Cor.Branca));
+            //colocarNovaPeca('e', 1, new Torre(tab, Cor.Branca));
+            colocarNovaPeca('a', 1, new Rei(tab, Cor.Branca));
 
             colocarNovaPeca('c', 7, new Torre(tab, Cor.Preta));
             colocarNovaPeca('c', 8, new Torre(tab, Cor.Preta));
@@ -112,7 +113,7 @@ namespace xadrez
             {
                 desfazMovimento(origem, destino, pecaCapturada);
                 throw new TabuleiroExceptions("Você não pode se colocar em xeque");
-            };
+            }
 
             if (estaEmXeque(adversaria(jogadorAtual)))
             {
@@ -123,8 +124,16 @@ namespace xadrez
                 xeque= false;
             }
 
-            turno++;
-            mudaJogador();
+            if (testeXequeMate(adversaria(jogadorAtual))){
+                terminada = true;
+            }
+            else
+            {
+                turno++;
+                mudaJogador();
+            }
+
+          
 
         }
 
@@ -167,6 +176,42 @@ namespace xadrez
                 }
             }
             return false;
+
+        }
+
+
+        public bool testeXequeMate(Cor cor) 
+        {
+            if (!estaEmXeque(cor))
+            {
+                return false;
+            }
+
+
+            foreach(Peca x in pecasEmJogo(cor))
+            {
+                bool[,] mat = x.movimentosPossiveis();
+                for(int i=0; i< tab.linhas; i++)
+                {
+                    for(int j = 0; j< tab.colunas; j++)
+                    {
+                        if (mat[i, j])
+                        {
+                            Posicao origem = x.posicao;
+                            Posicao destino = new Posicao(i, j);
+                            Peca pecacapturada = ExecutaMovimento(origem, destino);
+                            bool testeXeque = estaEmXeque(cor);
+                            desfazMovimento(origem, destino, pecacapturada);
+                            if(!testeXeque)
+                            {
+                                return false;
+                            }
+                        }
+
+                    }
+                }
+            }
+            return true;
         }
 
         //Pra validar algumas jogadas, criando excessões;
@@ -190,7 +235,7 @@ namespace xadrez
         //Funcao que verifica se origem e destino não é valida e lança esse erro.
         public void validarPosicaoDeDestino(Posicao origem, Posicao destino)
         {
-            if (!tab.peca(origem).podeMoverPara(destino))
+            if (!tab.peca(origem).movimentoPossivel(destino))
             {
                 throw new TabuleiroExceptions("Posição de destino inválda");
              };
