@@ -145,7 +145,7 @@ namespace xadrez
             colocarNovaPeca('e', 8, new Rei(tab, Cor.Preta, this));
             colocarNovaPeca('f', 8, new Bispo(tab, Cor.Preta));
             colocarNovaPeca('g', 8, new Cavalo(tab, Cor.Preta));
-            colocarNovaPeca('h', 8, new Torre(tab, Cor.Branca));
+            colocarNovaPeca('h', 8, new Torre(tab, Cor.Preta));
             colocarNovaPeca('a', 7, new Peao(tab, Cor.Preta, this));
             colocarNovaPeca('b', 7, new Peao(tab, Cor.Preta, this));
             colocarNovaPeca('c', 7, new Peao(tab, Cor.Preta, this));
@@ -220,6 +220,22 @@ namespace xadrez
                 throw new TabuleiroExceptions("Você não pode se colocar em xeque");
             }
 
+            Peca p = tab.peca(destino);
+
+            //#Jogada especial PROMOCAO
+            if(p is Peao)
+            {
+                if((p.Cor == Cor.Branca && destino.linha == 0) || (p.Cor == Cor.Preta && destino.linha == 7))
+                {
+                    p = tab.retirarPeca(destino);
+                    pecas.Remove(p);
+                    Peca dama = new Dama(tab, p.Cor);
+                    tab.colocarPeca(dama, destino);
+                    pecas.Add(dama);
+                }
+            }
+
+
             if (estaEmXeque(adversaria(jogadorAtual)))
             {
                 xeque = true;
@@ -237,7 +253,7 @@ namespace xadrez
                 turno++;
                 mudaJogador();
             }
-            Peca p = tab.peca(destino);
+           
 
             //EN PASSANT
             if(p is Peao && (destino.linha == origem.linha -  2 || destino.linha == origem.linha + 2))
